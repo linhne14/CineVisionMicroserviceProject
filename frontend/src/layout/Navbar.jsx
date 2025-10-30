@@ -28,21 +28,21 @@ export default function Navbar() {
 
   return (
     <div>
-        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
-            <div class="container px-5">
-            <Link to={"/"} style={{textDecoration:"none"}}>
-                <a class="navbar-brand"> CineVision </a>
+        <nav className="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+            <div className="container px-5">
+            <Link to={"/"} style={{textDecoration:"none"}} className="navbar-brand">
+                CineVision
             </Link> 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ms-auto align-items-center">
-                        {userFromRedux?.roles[0] === "ADMIN" ? 
-                            <li class="nav-item"><a class="nav-link" href="#!" onClick={() => navigate("/addMovie")}>Film Ekle</a></li>
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
+                <div className="collapse navbar-collapse" id="navbarResponsive">
+                    <ul className="navbar-nav ms-auto align-items-center">
+                        {userFromRedux?.roles && userFromRedux.roles.length > 0 && userFromRedux.roles[0] === "ADMIN" ? 
+                            <li className="nav-item"><a className="nav-link" href="#!" onClick={() => navigate("/addMovie")}>Thêm Phim</a></li>
                         : null}
 
-                        <li class="nav-item"><a class="nav-link" href="#!"
+                        <li className="nav-item"><a className="nav-link" href="#!"
                         data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
-                            Filmler</a></li>
+                            Phim</a></li>
                         
                         { userFromRedux ? <LoggedIn /> : <LoggedOut /> }
                     </ul>
@@ -55,60 +55,60 @@ export default function Navbar() {
         <RegisterModal />
 
         {/* Movies OffCanvas */}
-        <div class="offcanvas offcanvas offcanvas-top off-canvas-movie" tabindex="-1" id="offcanvasTop" 
+        <div className="offcanvas offcanvas offcanvas-top off-canvas-movie" tabIndex={-1} id="offcanvasTop" 
             aria-labelledby="offcanvasTopLabel" style={{offcanvasHeight:"100%"}}>
        
        
-            <div class="offcanvas-body mt-5">
+            <div className="offcanvas-body mt-5">
                 <div className='container mb-5'>
                     <div className='row justify-content-between align-items-center'>
                         <div className='col-sm-12 col-md-6 text-white text-start'>
                             <div className='row justify-content-center align-items-center'>
                                 <div className='col-sm-6'>
-                                    <img src={moviesInVision[0]?.movieImageUrl}
+                                    <img src={moviesInVision && moviesInVision.length > 0 ? moviesInVision[0]?.movieImageUrl : ''}
                                     className="img-fluid" alt="..."/>
                                 </div>
                                 <div className='col-sm-6'>
-                                    <h3>{moviesInVision[0]?.movieName}</h3>
-                                    <p className='last-movie-p'>{moviesInVision[0]?.description}</p>
-                                    <a class="slider-button btn btn-light btn-md rounded" data-bs-dismiss="offcanvasTop" aria-label="Close"
-                                         onClick={()=> navigate("/movie/" + moviesInVision[0]?.movieId)}>
+                                    <h3>{moviesInVision && moviesInVision.length > 0 ? moviesInVision[0]?.movieName : 'Loading...'}</h3>
+                                    <p className='last-movie-p'>{moviesInVision && moviesInVision.length > 0 ? moviesInVision[0]?.description : ''}</p>
+                                    <button className="slider-button btn btn-light btn-md rounded" data-bs-dismiss="offcanvasTop" aria-label="Close"
+                                         onClick={()=> navigate("/movie/" + (moviesInVision && moviesInVision.length > 0 ? moviesInVision[0]?.movieId : '1'))}>
                                          <strong>Bilet Al </strong>
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                         <div className='col-sm-12 col-md-6'>
                             <div className='row justify-content-center align-items-start'>
                                 <div className='col-sm-7'>
-                                    <h3 className='text-start ms-3'>Vizyondakiler</h3>
+                                    <h3 className='text-start ms-3'>Phim Đang Chiếu</h3>
                                     {/* For loop sadece 5 tanesi*/}
                                     <div className='ms-3 mt-2'>
                                         {moviesInVision.map(movie => (
-                                            <p className='nav-movie-p text-start  text-decoration-none' href='#!'
+                                            <button key={movie.movieId} className='nav-movie-p text-start text-decoration-none btn btn-link p-0 d-block text-white'
                                                 onClick={() => navigate("/movie/"+ movie.movieId)}>
                                                 {movie.movieName}
-                                            </p>
+                                            </button>
 
                                         ))}
 
                                     </div>
                                     
-                                    <a href='#!' className='text-decoration-none'><strong> Tümü </strong> </a>
+                                    <a href='#!' className='text-decoration-none'><strong> Tất Cả </strong> </a>
                                 </div>
                                 <div className='col-sm-5'>
-                                    <h3 className='text-start ms-3'>Yakında</h3>
+                                    <h3 className='text-start ms-3'>Phim Sắp Chiếu</h3>
                                     {/* For loop */}
                                     <div className='ms-3 mt-2'>
                                         {comingSoonMovies.map(movie => (
-                                             <p className='nav-movie-p text-start text-decoration-none' href='#!'
+                                             <button key={movie.movieId} className='nav-movie-p text-start text-decoration-none btn btn-link p-0 d-block text-white'
                                                 onClick={() => navigate("/movie/"+ movie.movieId)}>
                                                 {movie.movieName}
-                                            </p>
+                                            </button>
                                         ))}
 
                                     </div>
-                                    <a href='#!' className='text-decoration-none'><strong> Tümü </strong> </a>
+                                    <a href='#!' className='text-decoration-none'><strong> Tất Cả </strong> </a>
                                 </div>
                             </div>
                         </div>

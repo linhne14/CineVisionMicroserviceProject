@@ -23,13 +23,13 @@ export default function LoginModal() {
                 let closeButton = document.getElementById("close-button");
                 closeButton.click();
 
-                toast("Hoşgeldiniz!", {
+                toast("Chào mừng bạn!", {
                     theme: "colored",
                     position: "top-center"
                 })
             }
         }).catch(e => {
-            toast.error("Email veya şifre hatalı. Lütfen tekrar deneyin", {
+            toast.error("Email hoặc mật khẩu không đúng. Vui lòng thử lại", {
                 theme: "colored",
                 position: "top-center"
             })
@@ -39,36 +39,39 @@ export default function LoginModal() {
 
   return (
     <div>
-        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                <div class="modal-header login-modal-header">
-                    <h5 class="modal-title" id="loginModalLabel">Giriş</h5>
-                    <button id='close-button' type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div className="modal fade" id="loginModal" tabIndex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div className="modal-dialog modal-dialog-centered">
+                <div className="modal-content">
+                <div className="modal-header login-modal-header">
+                    <h5 className="modal-title" id="loginModalLabel">Đăng Nhập</h5>
+                    <button id='close-button' type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                     <Formik
-                        initialValues={{}}
+                        initialValues={{
+                            email: '',
+                            password: ''
+                        }}
                         onSubmit={(value) => {
                             login(value);
                         }}>
                         <Form>
-                            <div class="modal-body">
-                                <div class="form-floating mb-3">
-                                    <KaanKaplanTextInput id="email" type="email" name="email" class="form-control" placeholder="Email" required />
-                                    <label for="floatingInput">Email</label>
+                            <div className="modal-body">
+                                <div className="form-floating mb-3">
+                                    <KaanKaplanTextInput id="loginEmail" type="email" name="email" className="form-control" placeholder="Email" required />
+                                    <label htmlFor="loginEmail">Email</label>
                                 </div>
-                                <div class="form-floating mb-3">
-                                    <KaanKaplanTextInput id="password" type="password" name="password" class="form-control" placeholder="Şifre" required />
-                                    <label for="floatingPassword">Şifre</label>
+                                <div className="form-floating mb-3">
+                                    <KaanKaplanTextInput id="loginPassword" type="password" name="password" className="form-control" placeholder="Mật khẩu" required />
+                                    <label htmlFor="loginPassword">Mật khẩu</label>
                                 </div>
                                 <p className='ps-2 text-start'>
-                                    CineVision üyeliğiniz yok mu?
+                                    Bạn chưa có tài khoản CineVision?
                                     <a href='!#' style={{color:"black"}}
-                                        data-bs-toggle="modal" data-bs-target="#registerModal"> Hemen Üye Ol </a>
+                                        data-bs-toggle="modal" data-bs-target="#registerModal"> Đăng ký ngay </a>
                                 </p>
                             </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary login-modal-btn">Giriş Yap</button>
+                            <div className="modal-footer">
+                                <button type="submit" className="btn btn-primary login-modal-btn">Đăng Nhập</button>
                             </div>
                         </Form>
                     </Formik>

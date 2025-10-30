@@ -9,9 +9,9 @@ export default function LoggedIn() {
   return (
     <div>
         <ul className="navbar-nav ms-auto py-4 py-lg-0">
-            <li class="nav-item">
-                <a class="nav-link" href="#!" onClick={() => dispatch(removeUserFromState())}>
-                  Çıkış Yap
+            <li className="nav-item">
+                <a className="nav-link" href="#!" onClick={() => dispatch(removeUserFromState())}>
+                  Đăng Xuất
                 </a>
             </li>
         </ul>

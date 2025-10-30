@@ -5,14 +5,14 @@ export default function PaymnetSuccessPage() {
     <div>
         
         <div className='mt-5 p-5 container' style={{height: "100vh"}}>
-            <h2 className='mt-4'>Ödeme İşlemi Başarılı</h2>
+            <h2 className='mt-4'>Thanh Toán Thành Công</h2>
             <hr />
-            <h5 className='mt-4'>CineVision'ı tercih ettiğin için teşekkür ederiz. 
-                Ödeme işlemin tamamlandı. Bilet detay bilgilerin email adresine gönderildi.
+            <h5 className='mt-4'>Cảm ơn bạn đã chọn CineVision. 
+                Thanh toán đã hoàn tất. Thông tin chi tiết vé đã được gửi đến email của bạn.
             </h5>
 
             <h5 className='pt-3'>
-                CineVision Ailesi olarak İyi Seyirler Dileriz.
+                Gia đình CineVision chúc bạn xem phim vui vẻ.
             </h5>
         </div>
 

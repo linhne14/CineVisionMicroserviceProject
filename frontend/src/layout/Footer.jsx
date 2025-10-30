@@ -4,23 +4,23 @@ export default function Footer() {
   return (
     <div>
 
-        <footer class="py-5 bg-black">
-            <div class="container px-5">
+        <footer className="py-5 bg-black">
+            <div className="container px-5">
               <div className='row justify-content-evenly align-items-center'>
                 <div className='col'>
-                  <p className='m-1 lead text-center text-white'>Vizyonda</p>
-                  <p className='m-1 lead text-center text-white'>Yakında</p>
-                  <p className='m-1 lead text-center text-white'>Sinemalar</p>
+                  <p className='m-1 lead text-center text-white'>Phim Đang Chiếu</p>
+                  <p className='m-1 lead text-center text-white'>Phim Sắp Chiếu</p>
+                  <p className='m-1 lead text-center text-white'>Rạp Chiếu Phim</p>
                 </div>
                 <div className='col'>
-                  <p className='m-1 lead text-center text-white'>E-Bilet</p>
-                  <p className='m-1 lead text-center text-white'>İade İşlemleri</p>
-                  <p className='m-1 lead text-center text-white'>Satış Sözleşmesi</p>
+                  <p className='m-1 lead text-center text-white'>Vé Điện Tử</p>
+                  <p className='m-1 lead text-center text-white'>Chính Sách Hoàn Tiền</p>
+                  <p className='m-1 lead text-center text-white'>Điều Khoản Dịch Vụ</p>
                 </div>
               </div>
-              <p class="mt-5 text-center text-white small">
+              <p className="mt-5 text-center text-white small">
                 <strong>
-                   Copyright &copy; CineVision 2022
+                   Bản quyền &copy; CineVision 2025
                 </strong> 
               </p>
             </div>

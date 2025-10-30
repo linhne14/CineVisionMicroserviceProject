@@ -23,13 +23,13 @@ export default function Dashboard() {
         <Route path={"/paymentSuccess"}  element={<PaymnetSuccessPage/>} />
 
         <Route path="/addMovie"  element={
-          <ProtectedRoute user={userFromRedux?.roles[0]}>
+          <ProtectedRoute user={userFromRedux?.roles && userFromRedux.roles.length > 0 ? userFromRedux.roles[0] : null}>
             <AddMoviePage/>
           </ProtectedRoute>   
         } />
 
         <Route path="/addMovie/:movieId"  element={
-          <ProtectedRoute user={userFromRedux?.roles[0]}>
+          <ProtectedRoute user={userFromRedux?.roles && userFromRedux.roles.length > 0 ? userFromRedux.roles[0] : null}>
             <AddActorsAndCityToMovie/>
           </ProtectedRoute>
         } />       

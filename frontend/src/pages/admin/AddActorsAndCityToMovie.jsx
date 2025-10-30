@@ -27,21 +27,34 @@ export default function AddActorsAndCityToMovie() {
     useEffect(() => {
         cityService.getall().then(result => {
             let arr = [];
-            result.data.forEach(element => {
-                if(!arr.includes(element?.cityName)){
-                    arr.push(element?.cityName)
-                }
-            });
+            const cityData = result.data?.data || result.data || [];
+            if (Array.isArray(cityData)) {
+                cityData.forEach(element => {
+                    if(!arr.includes(element?.cityName)){
+                        arr.push(element?.cityName)
+                    }
+                });
+            }
             setCities(arr)
+        }).catch(error => {
+            console.error("Error loading cities:", error);
+            setCities([]);
         })
+        
         actorService.getall().then(result => {
             let arr = [];
-            result.data.forEach(element => {
-                if(!arr.includes(element?.actorName)){
-                    arr.push(element?.actorName)
-                }
-            });
+            const actorData = result.data?.data || result.data || [];
+            if (Array.isArray(actorData)) {
+                actorData.forEach(element => {
+                    if(!arr.includes(element?.actorName)){
+                        arr.push(element?.actorName)
+                    }
+                });
+            }
             setActors(arr)
+        }).catch(error => {
+            console.error("Error loading actors:", error);
+            setActors([]);
         })
       }, [])
 
@@ -56,13 +69,15 @@ export default function AddActorsAndCityToMovie() {
 
   return (
     <div>
-        <div className='mt-5 p-5 container' style={{height: "100vh"}}>
-            <h2 className='mt-4'>Film Ekle</h2>
-            <hr />
-
-            <h5 className='my-4'>
-                Eklemiş olduğunuz filmin oyuncu ve şehir bilgilerini ekleyin.
-            </h5>
+        <div className='mt-5 p-5 container-fluid' style={{minHeight: "100vh", maxWidth: "900px"}}>
+            <div className="text-center mb-4">
+                <h2 className='text-primary'>Thêm Diễn Viên & Thành Phố</h2>
+                <hr className="mx-auto" style={{width: "50%"}} />
+                <div className='alert alert-info'>
+                    <i className="fas fa-users me-2"></i>
+                    Thêm thông tin diễn viên và thành phố chiếu cho phim bạn đã tạo.
+                </div>
+            </div>
 
             <Formik 
                 initialValues={initValues}
@@ -104,6 +119,7 @@ export default function AddActorsAndCityToMovie() {
 
                 <Form>
                     <div class="mb-3">
+                        <label className="form-label fw-bold">Chọn Diễn Viên:</label>
                         <KaanKaplanSelect
                             class="form-select form-select-lg mb-3"
                             name="actors"
@@ -114,18 +130,19 @@ export default function AddActorsAndCityToMovie() {
                             ))}
                         />
                     </div>
-                    <p>Listede yoksa lütfen virgül ile ayırarak yazınız.</p>
+                    <p className="text-muted">Nếu không có trong danh sách, vui lòng viết tên diễn viên cách nhau bằng dấu phẩy ở ô bên dưới.</p>
                     <div class="form-floating mb-3">
-                        <KaanKaplanTextInput  type="text" name='actorName' class="form-control" id="floatingInput" placeholder="Aktörün İsmi" />
-                        <label for="floatingInput">Aktörün İsmi</label>
+                        <KaanKaplanTextInput  type="text" name='actorName' class="form-control" id="floatingInput" placeholder="Tên Diễn Viên" />
+                        <label for="floatingInput">Tên Diễn Viên</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <KaanKaplanTextInput name='imageUrl' type="text" class="form-control" id="imageUrl" placeholder="Afiş Resmi Url" />
-                        <label for="imageUrl">Afiş Resmi Url</label>
+                        <KaanKaplanTextInput name='imageUrl' type="text" class="form-control" id="imageUrl" placeholder="URL Poster Phim" />
+                        <label for="imageUrl">URL Poster Phim</label>
                     </div>
 
                      <div class="mb-3">
+                        <label className="form-label fw-bold">Chọn Thành Phố Chiếu:</label>
                         <KaanKaplanSelect 
                             class="form-select form-select-lg mb-3"
                             name="cities"
@@ -134,14 +151,14 @@ export default function AddActorsAndCityToMovie() {
                             options= {cities.map(city => (
                                 {key: city, text:city, value: city}
                             ))}
-                            placeholder="Şehir"
+                            placeholder="Thành Phố"
                         />
                     </div>
 
                     <div className="d-grid gap-2 my-4 col-6 mx-auto">
                       <input
                         type="submit"
-                        value="Ekle"
+                        value="Thêm"
                         className="btn btn-block btn-primary"
                       />
                     </div>

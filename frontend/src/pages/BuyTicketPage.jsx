@@ -23,26 +23,27 @@ export default function BuyTicketPage() {
 
     function checkChairIsEmpty(elementId) {
         let classname = document.getElementById(elementId).className;
-        if(classname === "taken"){
-            return false;
-        }
-        return true;
+        return classname.includes("empty");
     }
 
     function selectChair(elementId) {
         let item = document.getElementById(elementId);
+        console.log('Selecting chair:', elementId, 'Current chairNumber:', chairNumber, 'isEmpty:', checkChairIsEmpty(elementId));
+        
         if(checkChairIsEmpty(elementId) && chairNumber > 0) {
-            item.style.background = "#ff6a00";
             item.className = "taken";
             setChairNumberList([...chairNumberList, elementId]);
             setChairNumber(chairNumber-1)
+            console.log('Chair selected:', elementId, 'Remaining chairs:', chairNumber-1);
         } else {
-            if(item.className == "taken"){
-                item.removeAttribute("style");
-                item.className= "empty";
-                let list = chairNumberList.filter(item => item != elementId);
+            if(item.className === "taken"){
+                item.className = "empty";
+                let list = chairNumberList.filter(chair => chair !== elementId);
                 setChairNumberList(list);
                 setChairNumber(chairNumber+1)
+                console.log('Chair deselected:', elementId, 'Remaining chairs:', chairNumber+1);
+            } else {
+                console.log('Cannot select chair - chairNumber:', chairNumber, 'isEmpty:', checkChairIsEmpty(elementId));
             }
         }
     }
@@ -90,6 +91,17 @@ export default function BuyTicketPage() {
                         ].join('\n')
                 }}>
                 </style>
+                <style dangerouslySetInnerHTML={{
+                    __html: [
+                        '.empty { background-color: #f8f9fa !important; color: #6c757d !important; border: 2px solid #dee2e6 !important; border-radius: 8px; transition: all 0.3s ease; }',
+                        '.empty:hover { background-color: #e9ecef !important; border-color: #007bff !important; }',
+                        '.taken { background-color: #28a745 !important; color: white !important; border: 2px solid #1e7e34 !important; border-radius: 8px; }',
+                        '.taken:hover { background-color: #218838 !important; }',
+                        '.seat-table td { padding: 12px; text-align: center; }',
+                        '.seat-table .fa-chair { font-size: 20px; }'
+                    ].join('\n')
+                }}>
+                </style>
             <div className='col-sm-12 col-md-8 pt-5'>
                 <div className='container pt-5'>
                     
@@ -98,7 +110,7 @@ export default function BuyTicketPage() {
                             <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
                                 <div className='row pt-3 pb-1 px-4 align-items-center'>
                                         <div className='col-sm-6 text-start'>
-                                            <h3>Biletini Seç</h3>
+                                            <h3>Chọn Vé</h3>
                                         </div>
                                             {/* Ticket Type Section */}
                                          
@@ -109,7 +121,7 @@ export default function BuyTicketPage() {
                                                         data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo"
                                                         onClick={() => {
                                                             if(studentTicketNumber === 0 && adultTicketNumber === 0) {
-                                                                toast.warning("Devam etmek için lütfen bilet seçiniz", {
+                                                                toast.warning("Để tiếp tục, vui lòng chọn vé", {
                                                                     theme: "dark",
                                                                     position: "top-center"
                                                                 })
@@ -117,12 +129,12 @@ export default function BuyTicketPage() {
                                                                 setTicketItem("placeSection")
                                                                 setChairNumber(studentTicketNumber + adultTicketNumber)
                                                             }
-                                                        }}>Devam Et</button>
+                                                        }}>Tiếp Tục</button>
                                                 :  
                                                     <button className='btn btn-outline-dark'
                                                         data-bs-toggle="collapse" 
                                                         data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne"
-                                                        onClick={() => setTicketItem("ticketSection")}>Değiştir</button>}
+                                                        onClick={() => setTicketItem("ticketSection")}>Thay Đổi</button>}
                                             </div>
                                         
                                 </div>
@@ -134,17 +146,17 @@ export default function BuyTicketPage() {
                                         <section>
                                                 <div className='row '>
                                                     <div className='col-sm-6 text-start'>
-                                                        <p>Film ve Seans seçiminden sonra bilet tipini seçmelisin.
-                                                            Eğer öğrenciysen kimlik kartını yanında getirmeyi unutma.</p>                        
+                                                        <p>Sau khi chọn phim và suất chiếu, bạn phải chọn loại vé.
+                                                            Nếu là sinh viên, đừng quên mang thẻ sinh viên.</p>                        
                                                     </div>
                                                 </div>
 
                                             <div className='row mt-3 px-2 border border-2 align-items-center'>
                                                 <div className='col-sm-6 text-uppercase border-end'>
-                                                    Tam
+                                                    Người Lớn
                                                 </div>
                                                 <div className='col-sm-3 border-end'>
-                                                    Fiyat 25₺
+                                                    Giá 25₺
                                                 </div>
                                                 <div className='col-sm-3'>
                                                     <div className='row justify-content-center align-items-center'>
@@ -169,10 +181,10 @@ export default function BuyTicketPage() {
                                             </div>
                                             <div className='row mt-1 px-2 border border-2 align-items-center'>
                                                 <div className='col-sm-6 text-uppercase border-end'>
-                                                    Öğrenci
+                                                    Sinh Viên
                                                 </div>
                                                 <div className='col-sm-3 border-end'>
-                                                    Fiyat 15₺
+                                                    Giá 15₺
                                                 </div>
                                                 <div className='col-sm-3'>
                                                     <div className='row justify-content-center align-items-center'>
@@ -197,7 +209,7 @@ export default function BuyTicketPage() {
                                                 </div>
                                             </div>
 
-                                            <p className='lead text-end mt-3 me-5'>Toplam Tutar: <strong>{(studentTicketNumber * 15.00 + adultTicketNumber * 25.00).toFixed(2)} ₺ </strong></p>
+                                            <p className='lead text-end mt-3 me-5'>Tổng Tiền: <strong>{(studentTicketNumber * 15.00 + adultTicketNumber * 25.00).toFixed(2)} ₺ </strong></p>
                                         </section>
 
                                     </div>
@@ -210,7 +222,10 @@ export default function BuyTicketPage() {
                             <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
                                 <div className='row pt-3 pb-1 px-4 align-items-center'>
                                         <div className='col-sm-6 text-start'>
-                                            <h3>Koltuk Seç </h3>
+                                            <h3>Chọn Ghế</h3>
+                                            {chairNumber > 0 && (
+                                                <p className='text-muted'>Còn {chairNumber} ghế cần chọn</p>
+                                            )}
                                         </div>
                                         <div className='col-sm-6 mb-2 text-end'>
                                             {ticketItem === "placeSection" ?
@@ -219,7 +234,7 @@ export default function BuyTicketPage() {
                                                     aria-expanded="false" aria-controls="panelsStayOpen-collapseThree"
                                                     onClick={() => {
                                                         if (chairNumber !== 0) {
-                                                            toast.warning("Lütfen bilet sayınız kadar koltuk seçiniz!", {
+                                                            toast.warning("Vui lòng chọn số ghế bằng số vé!", {
                                                                 theme: "dark",
                                                                 position: "top-center"
                                                             })
@@ -245,81 +260,101 @@ export default function BuyTicketPage() {
                                 <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
                                     <div class="accordion-body">
                                     {ticketItem === "placeSection" ? 
-                                        <table class="table">
-                                            <tbody>
+                                        <div>
+                                            <div className='row mb-3'>
+                                                <div className='col-12'>
+                                                    <div className='d-flex justify-content-center gap-4'>
+                                                        <div className='d-flex align-items-center'>
+                                                            <span className='empty me-2' style={{padding: '8px 12px', borderRadius: '8px'}}>
+                                                                <i className="fa-solid fa-chair"></i>
+                                                            </span>
+                                                            <small>Ghế trống</small>
+                                                        </div>
+                                                        <div className='d-flex align-items-center'>
+                                                            <span className='taken me-2' style={{padding: '8px 12px', borderRadius: '8px'}}>
+                                                                <i className="fa-solid fa-chair"></i>
+                                                            </span>
+                                                            <small>Đã chọn</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <table class="table seat-table">
+                                                <tbody>
                                                 <tr>
                                                     <th scope="row">F</th>
                                                     <td></td>
                                                     <td></td>
-                                                    <td id="F1" onClick={() => selectChair("F1")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="F2" onClick={() => selectChair("F2")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="F3" onClick={() => selectChair("F3")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="F4" onClick={() => selectChair("F4")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="F5" onClick={() => selectChair("F5")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="F6" onClick={() => selectChair("F6")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="F7" onClick={() => selectChair("F7")}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="F1" className="empty" onClick={() => selectChair("F1")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="F2" className="empty" onClick={() => selectChair("F2")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="F3" className="empty" onClick={() => selectChair("F3")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="F4" className="empty" onClick={() => selectChair("F4")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="F5" className="empty" onClick={() => selectChair("F5")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="F6" className="empty" onClick={() => selectChair("F6")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="F7" className="empty" onClick={() => selectChair("F7")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
                                                 </tr>
                                                 <tr>
                                                 <th >E</th>
                                                     <td></td>
                                                     <td></td>
-                                                    <td id="E1" onClick={() => selectChair("E1")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="E2" onClick={() => selectChair("E2")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="E3" onClick={() => selectChair("E3")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="E4" onClick={() => selectChair("E4")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="E5" onClick={() => selectChair("E5")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="E6" onClick={() => selectChair("E6")}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="E1" className="empty" onClick={() => selectChair("E1")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="E2" className="empty" onClick={() => selectChair("E2")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="E3" className="empty" onClick={() => selectChair("E3")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="E4" className="empty" onClick={() => selectChair("E4")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="E5" className="empty" onClick={() => selectChair("E5")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="E6" className="empty" onClick={() => selectChair("E6")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
                                                 </tr>
                                                 <tr>
                                                     <th>D</th>
                                                     <td></td>
                                                     <td></td>
-                                                    <td id="D1" onClick={() => selectChair("D1")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="D2" onClick={() => selectChair("D2")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="D3" onClick={() => selectChair("D3")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="D4" onClick={() => selectChair("D4")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="D5" onClick={() => selectChair("D5")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="D6" onClick={() => selectChair("D6")}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="D1" className="empty" onClick={() => selectChair("D1")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="D2" className="empty" onClick={() => selectChair("D2")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="D3" className="empty" onClick={() => selectChair("D3")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="D4" className="empty" onClick={() => selectChair("D4")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="D5" className="empty" onClick={() => selectChair("D5")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="D6" className="empty" onClick={() => selectChair("D6")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
                                                 </tr>
                                                 <tr>
                                                     <th>C</th>
                                                     <td></td>
                                                     <td></td>
-                                                    <td id="C1" onClick={() => selectChair("C1")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="C2" onClick={() => selectChair("C2")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="C3" onClick={() => selectChair("C3")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="C4" onClick={() => selectChair("C4")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="C5" onClick={() => selectChair("C5")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="C6" onClick={() => selectChair("C6")}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="C1" className="empty" onClick={() => selectChair("C1")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="C2" className="empty" onClick={() => selectChair("C2")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="C3" className="empty" onClick={() => selectChair("C3")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="C4" className="empty" onClick={() => selectChair("C4")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="C5" className="empty" onClick={() => selectChair("C5")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="C6" className="empty" onClick={() => selectChair("C6")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
                                                 </tr>
                                                 <tr>
                                                     <th scope="row">B</th>
                                                     <td></td>
                                                     <td></td>
-                                                    <td id="B1" onClick={() => selectChair("B1")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="B2" onClick={() => selectChair("B2")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="B3" onClick={() => selectChair("B3")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="B4" onClick={() => selectChair("B4")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="B5" onClick={() => selectChair("B5")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="B6" onClick={() => selectChair("B6")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="B7" onClick={() => selectChair("B7")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="B8" onClick={() => selectChair("B8")}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="B1" className="empty" onClick={() => selectChair("B1")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="B2" className="empty" onClick={() => selectChair("B2")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="B3" className="empty" onClick={() => selectChair("B3")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="B4" className="empty" onClick={() => selectChair("B4")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="B5" className="empty" onClick={() => selectChair("B5")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="B6" className="empty" onClick={() => selectChair("B6")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="B7" className="empty" onClick={() => selectChair("B7")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="B8" className="empty" onClick={() => selectChair("B8")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
                                                 </tr>
                                                 <tr>
                                                     <th scope="row">A</th>
                                                     <td></td>
                                                     <td></td>
-                                                    <td id="A1" onClick={() => selectChair("A1")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="A2" onClick={() => selectChair("A2")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="A3" onClick={() => selectChair("A3")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="A4" onClick={() => selectChair("A4")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="A5" onClick={() => selectChair("A5")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="A6" onClick={() => selectChair("A6")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="A7" onClick={() => selectChair("A7")}> <i class="fa-solid fa-chair"></i> </td>
-                                                    <td id="A8" onClick={() => selectChair("A8")}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="A1" className="empty" onClick={() => selectChair("A1")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="A2" className="empty" onClick={() => selectChair("A2")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="A3" className="empty" onClick={() => selectChair("A3")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="A4" className="empty" onClick={() => selectChair("A4")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="A5" className="empty" onClick={() => selectChair("A5")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="A6" className="empty" onClick={() => selectChair("A6")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="A7" className="empty" onClick={() => selectChair("A7")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
+                                                    <td id="A8" className="empty" onClick={() => selectChair("A8")} style={{cursor: 'pointer'}}> <i class="fa-solid fa-chair"></i> </td>
                                                 </tr>
                                             </tbody>
                                         </table>
+                                        </div>
                                             : null}
                                             {ticketItem === "placeSection" ? (
                                                 <div>
@@ -338,11 +373,11 @@ export default function BuyTicketPage() {
                             <h2 class="accordion-header" id="panelsStayOpen-headingThree">
                                 <div className='row pt-3 pb-1 px-4 align-items-center'>
                                         <div className='col-sm-6 text-start'>
-                                            <h3>Ödeme</h3>
+                                            <h3>Thanh Toán</h3>
                                         </div>
                                         <div className='col-sm-6 mb-2 text-end'>
                                             {ticketItem === "paySection" ?
-                                                <h3>Toplam : {(studentTicketNumber * 15.00 + adultTicketNumber * 25.00).toFixed(2)} ₺</h3>
+                                                <h3>Tổng Cộng : {(studentTicketNumber * 15.00 + adultTicketNumber * 25.00).toFixed(2)} ₺</h3>
                                             : null}
                                         </div>
                                       
@@ -370,51 +405,51 @@ export default function BuyTicketPage() {
                                     }}>
                                     <Form className='row justify-content-center align-items-start'>
                                         <div className='col-sm-12 col-md-6'>
-                                            <div class="imput-group form-floating has-validation mb-3">
-                                                <KaanKaplanTextInput name="fullName" type="text" class="form-control" id="fullName" placeholder="İsim - Soyisim" required/>
-                                                <label for="fullName">İsim - Soyisim</label>
+                                            <div className="imput-group form-floating has-validation mb-3">
+                                                <KaanKaplanTextInput name="fullName" type="text" className="form-control" id="fullName" placeholder="Họ Tên" required/>
+                                                <label htmlFor="fullName">Họ Tên</label>
                                             </div>
-                                            <div class="form-floating mb-3">
-                                                <KaanKaplanTextInput name="email" type="email" class="form-control" id="email" placeholder="Email" required/>
-                                                <label for="email">Email</label>
+                                            <div className="form-floating mb-3">
+                                                <KaanKaplanTextInput name="email" type="email" className="form-control" id="email" placeholder="Email" required/>
+                                                <label htmlFor="email">Email</label>
                                             </div>
-                                            <div class="form-floating mb-3">
-                                                <KaanKaplanTextInput name="phone" type="tel" pattern="[0]{1} [0-9]{3} [0-9]{3} [0-9]{2} [0-9]{2}" class="form-control" id="phone" placeholder="0 5** *** ** **" required/>
-                                                <label for="phone">Telefon - 0 5** *** ** **</label>
+                                            <div className="form-floating mb-3">
+                                                <KaanKaplanTextInput name="phone" type="tel" pattern="[0]{1} [0-9]{3} [0-9]{3} [0-9]{2} [0-9]{2}" className="form-control" id="phone" placeholder="Số Điện Thoại" required/>
+                                                <label htmlFor="phone">Số Điện Thoại</label>
                                             </div>
                                             
                                            
                                         </div>
 
                                         <div className='col-sm-12 col-md-6 mb-3'>
-                                            <div class="form-floating mb-3">
-                                                <Cleave class="form-control" id="floatingCardNumber" placeholder='Kredi Kartı Numarası' required
+                                            <div className="form-floating mb-3">
+                                                <Cleave className="form-control" id="floatingCardNumber" placeholder='Số Thẻ Tín Dụng' required
                                                 options={{creditCard:true}} />
-                                                <label for="floatingCardNumber">Kredi Kartı Numarası</label>
+                                                <label htmlFor="floatingCardNumber">Số Thẻ Tín Dụng</label>
                                             </div>
                                             <div className='row'>
                                                 <div className='col-sm-6'>
-                                                    <div class="form-floating mb-3">
-                                                        <Cleave type="text" class="form-control" id="floatingCardLastDate" placeholder='Son Tarih' required
+                                                    <div className="form-floating mb-3">
+                                                        <Cleave type="text" className="form-control" id="floatingCardLastDate" placeholder='Ngày Hết Hạn' required
                                                         options={{date:true, datePattern: ['m','y']}} />
-                                                        <label for="floatingCardLastDate">Son Tarih</label>
+                                                        <label htmlFor="floatingCardLastDate">Ngày Hết Hạn</label>
                                                     </div>
                                                 </div>
                                                 <div className='col-sm-6'>
-                                                    <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control"  maxlength="3" size="3"  id="floatingSecurityNumber" placeholder="Güvenlik Numarası" required/>
-                                                        <label for="floatingSecurityNumber">CCV</label>
+                                                    <div className="form-floating mb-3">
+                                                        <input type="text" className="form-control"  maxLength="3" size="3"  id="floatingSecurityNumber" placeholder="Mã Bảo Mật" required/>
+                                                        <label htmlFor="floatingSecurityNumber">CCV</label>
                                                     </div>
                                                 </div>
-                                                <p className='text-start'> <input class="form-check-input me-3" type="checkbox" value="" aria-label="Checkbox for following text input" required/>Ön Bilgilendirme Koşulları'nı ve
-                                                Mesafeli Satış Sözleşmesi'ni okudum, onaylıyorum.
+                                                <p className='text-start'> <input className="form-check-input me-3" type="checkbox" value="" aria-label="Checkbox for following text input" required/>Tôi đã đọc và đồng ý với Điều khoản Dịch vụ và
+                                                Chính sách Bảo mật.
                                             </p>
                                             </div>
                                         </div>
 
                                         <hr />
                                         <div className='text-end mt-1'>
-                                            <button type='submit' className='btn btn-dark col-3'>Ödeme</button>
+                                            <button type='submit' className='btn btn-dark col-3'>Thanh Toán</button>
                                         </div>
                                     </Form>
                                 </Formik>

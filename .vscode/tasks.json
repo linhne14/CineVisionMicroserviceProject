@@ -1,0 +1,20 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run Eureka Server",
+			"type": "shell",
+			"command": "mvn",
+			"args": [
+				"-f",
+				"eureka-server/pom.xml",
+				"compile",
+				"exec:java",
+				"-Dexec.mainClass=com.kaankaplan.eurekaserver.EurekaServerApplication"
+			],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		}
+	]
+}
