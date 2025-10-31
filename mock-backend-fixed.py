@@ -378,15 +378,27 @@ class MockBackendHandler(BaseHTTPRequestHandler):
                 mock_comments = [
                     {
                         "id": 1,
-                        "content": "Great movie! Highly recommend.",
-                        "user": {"name": "John Doe"},
+                        "content": "Phim tuyệt vời! Rất khuyến khích xem.",
+                        "user": {"name": "Nguyễn Văn An"},
                         "createdAt": "2023-10-01"
                     },
                     {
                         "id": 2,
-                        "content": "Amazing visual effects and storyline.",
-                        "user": {"name": "Jane Smith"},
+                        "content": "Hiệu ứng hình ảnh và cốt truyện tuyệt vời.",
+                        "user": {"name": "Trần Thị Bình"},
                         "createdAt": "2023-10-02"
+                    },
+                    {
+                        "id": 3,
+                        "content": "Phim hay, diễn viên diễn xuất rất tốt!",
+                        "user": {"name": "Lê Minh Châu"},
+                        "createdAt": "2023-10-03"
+                    },
+                    {
+                        "id": 4,
+                        "content": "Cảnh hành động kịch tính, đáng xem.",
+                        "user": {"name": "Phạm Thu Dung"},
+                        "createdAt": "2023-10-04"
                     }
                 ]
                 self.send_response(200)
@@ -467,7 +479,7 @@ class MockBackendHandler(BaseHTTPRequestHandler):
                 self.send_header('Access-Control-Allow-Origin', '*')
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
-                response = json.dumps({"status": "OK", "message": "Mock Backend is running"})
+                response = json.dumps({"status": "OK", "message": "Mock Backend đang hoạt động"})
                 self.wfile.write(response.encode())
                 print("✅ Health check")
                 
@@ -592,7 +604,7 @@ class MockBackendHandler(BaseHTTPRequestHandler):
                     # Mock successful payment response
                     payment_response = {
                         "success": True,
-                        "message": "Ticket booked successfully!",
+                        "message": "Đặt vé thành công!",
                         "ticketId": "TK" + str(int(time.time())),
                         "bookingDetails": {
                             "movieTitle": ticket_data.get("movieTitle", "Unknown Movie"),
@@ -632,7 +644,7 @@ class MockBackendHandler(BaseHTTPRequestHandler):
                     # Mock successful registration response
                     registration_response = {
                         "success": True,
-                        "message": "User registered successfully!",
+                        "message": "Đăng ký người dùng thành công!",
                         "userId": "USER" + str(int(time.time())),
                         "userDetails": {
                             "email": user_data.get("email", ""),
@@ -684,7 +696,7 @@ class MockBackendHandler(BaseHTTPRequestHandler):
                     
                     login_response = {
                         "success": True,
-                        "message": "Login successful!",
+                        "message": "Đăng nhập thành công!",
                         "token": "mock_jwt_token_" + str(int(time.time())),
                         "userId": user_id,
                         "email": user_email,
@@ -731,7 +743,7 @@ class MockBackendHandler(BaseHTTPRequestHandler):
                     new_comment = {
                         "commentId": "COMMENT" + str(int(time.time())),
                         "commentText": comment_data.get("commentText", ""),
-                        "commentBy": comment_data.get("commentBy", "Anonymous"),
+                        "commentBy": comment_data.get("commentBy", "Khách ẩn danh"),
                         "commentByUserId": comment_data.get("commentByUserId", ""),
                         "movieId": comment_data.get("movieId", ""),
                         "createdAt": time.strftime("%Y-%m-%d %H:%M:%S")
@@ -767,7 +779,7 @@ class MockBackendHandler(BaseHTTPRequestHandler):
                     # Mock successful deletion response
                     delete_response = {
                         "success": True,
-                        "message": "Comment deleted successfully!",
+                        "message": "Xóa bình luận thành công!",
                         "deletedCommentId": delete_data.get("commentId", "")
                     }
                     
@@ -801,7 +813,7 @@ class MockBackendHandler(BaseHTTPRequestHandler):
                     new_movie_id = len(MOCK_MOVIES) + 1
                     add_response = {
                         "success": True,
-                        "message": "Movie added successfully!",
+                        "message": "Thêm phim thành công!",
                         "movieId": new_movie_id,
                         "data": {
                             "id": new_movie_id,
@@ -841,7 +853,7 @@ class MockBackendHandler(BaseHTTPRequestHandler):
                     new_director_id = 100 + int(time.time() % 1000)
                     add_response = {
                         "success": True,
-                        "message": "Director added successfully!",
+                        "message": "Thêm đạo diễn thành công!",
                         "data": {
                             "directorId": new_director_id,
                             "id": new_director_id,
