@@ -6,22 +6,35 @@ spring:
     name: movieService
   # PostgreSql Properties
   datasource:
-    username: 'postgres'
-    url: jdbc:postgresql://localhost:5432/cine_vision
-    password: '12345'
+    username: ${POSTGRES_USER:postgres}
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:5432/${POSTGRES_DB:cine_vision}
+    password: ${POSTGRES_PASSWORD:postgres123}
     driver-class-name: org.postgresql.Driver
+    # HikariCP Connection Pool Configuration
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      connection-timeout: 20000
+      leak-detection-threshold: 60000
+      pool-name: CineVisionMovieServiceCP
   jpa:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: 'true'
+        '[format_sql]': true
+        jdbc:
+          '[batch_size]': 25
+        '[order_inserts]': true
+        '[order_updates]': true
     hibernate:
-      ddl-auto: update
-    show-sql: 'true'
+      ddl-auto: validate # Changed from update to validate for Flyway
+    show-sql: false # Disable in production
   # Apache Kafka Producer Properties
   kafka:
     producer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
@@ -33,7 +46,7 @@ spring:
       name: email_topics
   # Zipkin Properties
   zipkin:
-    base-url: http://localhost:9411
+    base-url: http://${ZIPKIN_HOST:localhost}:9411
   # Sleuth Properties
   sleuth:
     sampler:
@@ -42,7 +55,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://eureka:password@localhost:8761/eureka
+      defaultZone: http://eureka:password@${EUREKA_HOST:localhost}:8761/eureka
     fetch-registry: true
     register-with-eureka: true
 

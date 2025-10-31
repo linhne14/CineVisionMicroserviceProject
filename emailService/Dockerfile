@@ -6,14 +6,17 @@ RUN apk add --no-cache maven
 
 WORKDIR /app
 
+# Copy parent pom first 
+COPY pom.xml ../pom.xml
+
 # Copy pom.xml for dependency caching
-COPY pom.xml ./
+COPY emailService/pom.xml ./
 
 # Download dependencies
 RUN mvn dependency:go-offline -B
 
 # Copy source and build
-COPY src ./src
+COPY emailService/src ./src
 RUN mvn clean package -DskipTests
 
 # Production stage
