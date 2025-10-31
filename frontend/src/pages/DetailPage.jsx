@@ -188,10 +188,10 @@ export default function DetailPage() {
                             <span key={actor.id || index}>{actor.actorName + " ,"}</span>
                         ))}
                         </h5>
-                        <div class="row gy-1 justify-content-start align-items-end mt-5">
+                        <div className="row gy-1 justify-content-start align-items-end mt-5">
                         
                             <div className='col-sm-4'>
-                                <button class="detail-page-btn btn btn-light btn-lg col-12" type="button"
+                                <button className="detail-page-btn btn btn-light btn-lg col-12" type="button"
                                     onClick={() => {
                                         document.querySelector("#ticketBuy").scrollIntoView({
                                             behavior: "smooth"
@@ -200,7 +200,7 @@ export default function DetailPage() {
                                 
                             </div>
                             <div className='col-sm-4'>
-                                <button class="detail-page-btn btn btn-light btn-lg col-12" type="button"
+                                <button className="detail-page-btn btn btn-light btn-lg col-12" type="button"
                                     onClick={() => {
                                         document.querySelector("#commentSection").scrollIntoView({
                                             behavior: "smooth"
@@ -209,7 +209,7 @@ export default function DetailPage() {
 
                             </div>
                             <div className='col-sm-4'>
-                                <button class="detail-page-btn btn btn-light btn-lg col-12" type="button"
+                                <button className="detail-page-btn btn btn-light btn-lg col-12" type="button"
                                     data-bs-toggle="modal" data-bs-target="#movieTrailerModal"><strong>Trailer</strong></button>
 
                             </div>
@@ -261,9 +261,9 @@ export default function DetailPage() {
                         <h2>Mua Vé</h2>
                     </div>
                     <div className='col-sm-8 ps-3 mt-2'>
-                        <button type="button" class="select-saloon-button btn btn-primary col-12"
+                        <button type="button" className="select-saloon-button btn btn-primary col-12"
                          data-bs-toggle="modal" data-bs-target="#saloonModal">
-                            <strong>Chọn Rạp Phim</strong> <i class="fa-solid fa-caret-down"></i>
+                            <strong>Chọn Rạp Phim</strong> <i className="fa-solid fa-caret-down"></i>
                         </button>
                     </div>
                 </div>
@@ -314,7 +314,7 @@ export default function DetailPage() {
                 <div className='row gy-2 justify-content-start align-items-start'>
                     <div className='col-sm-12 col-md-6 text-start'>
                        <h3>Bình Luận</h3>
-                       {/* Yorumları listele */}
+                       {/* Danh sách bình luận */}
                        <div style={{height: "200px", overflow:"scroll",overflowX: "hidden"}}>
                             {comments.length == 0 ? (
                                 <p className='lead mt-4'>Hãy là người đầu tiên bình luận</p>
@@ -329,7 +329,7 @@ export default function DetailPage() {
                                     {userFromRedux && comment.commentByUserId == (userFromRedux.userId || userFromRedux.user?.userId) ? 
                                         <div className='col-sm-2'>
                                             <p className='small mb-0' onClick={() => {deleteComment(comment.commentId)}}> 
-                                                <i class="fa-solid fa-xmark" ></i>
+                                                <i className="fa-solid fa-xmark" ></i>
                                             </p>
                                         </div>
                                         :
@@ -354,7 +354,7 @@ export default function DetailPage() {
                     <div className='col-sm-12 col-md-6 text-start'>
                         <h3>Viết Bình Luận</h3>
                             <textarea id="commentArea" className='text-dark mb-3' placeholder='Nhập bình luận của bạn' onChange={(e) => setCommentText(e.target.value)} ></textarea>
-                            <button class="comment-btn btn btn-dark btn-lg col-12" type="button" onClick={() => sendCommentText()}><strong>Gửi</strong></button>
+                            <button className="comment-btn btn btn-dark btn-lg col-12" type="button" onClick={() => sendCommentText()}><strong>Gửi</strong></button>
                     </div>
                 </div>
             </div>
@@ -383,9 +383,9 @@ export default function DetailPage() {
                                 })
                             }}>
                             <div className='slider-item-caption d-flex align-items-end justify-content-center h-100 w-100'>
-                                <div class="d-flex align-items-center flex-column mb-3" style={{height: "20rem"}}>
-                                    <div class="mb-auto pt-5 text-white"><h3> {movie.movieName} </h3></div>
-                                    <div class="p-2 d-grid gap-2">
+                                <div className="d-flex align-items-center flex-column mb-3" style={{height: "20rem"}}>
+                                    <div className="mb-auto pt-5 text-white"><h3> {movie.movieName} </h3></div>
+                                    <div className="p-2 d-grid gap-2">
                                         <a className="slider-button btn btn-light btn-md rounded d-none d-sm-block"
                                             onClick={()=> {
                                                 navigate("/movie/" + movie.movieId)
@@ -393,7 +393,7 @@ export default function DetailPage() {
                                             }}>
                                             <strong>Bình Luận </strong>
                                         </a>
-                                        <a class="slider-button btn btn-light btn-md rounded d-none d-sm-block"
+                                        <a className="slider-button btn btn-light btn-md rounded d-none d-sm-block"
                                             onClick={()=> {
                                                 navigate("/movie/" + movie.movieId)
                                                 getNewVisionMovie(movie.movieId);
@@ -405,7 +405,7 @@ export default function DetailPage() {
                                 </div>
                             </div>
                             <img src={movie.movieImageUrl}
-                                class="img-fluid mx-2" alt="..."/>
+                                className="img-fluid mx-2" alt="..."/>
                         </div>
                     </SwiperSlide>
                 ))}
@@ -443,7 +443,7 @@ export default function DetailPage() {
                         <h5 className="modal-title" id="saloonModalLabel">Chọn Thành Phố</h5>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <div className="modal-body">
                         {cinemaSaloons.map(saloon => (
                             <a className='text-start text-dark' href='#!'
                             data-bs-target="#saloonModal2" data-bs-toggle="modal" data-bs-dismiss="modal" 
@@ -470,9 +470,9 @@ export default function DetailPage() {
                             {selectedCity.cityName}
                         </h5>
                     </a>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <div className="modal-body">
                         {selectedCity?.saloon?.map(s => (
                             <a className='text-start text-dark' href='#!' onClick={() =>  {
                                 setSelectedSaloon(s)

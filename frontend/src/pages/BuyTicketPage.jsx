@@ -67,8 +67,8 @@ export default function BuyTicketPage() {
                     <h3 className='mt-2'> {movieState?.movieName} </h3>
                     <img className='img-thumbnail w-50 mx-auto mt-5' src={movieState?.imageUrl} />
                     <h5 className='pt-5'><i className="fa-solid fa-location-dot"></i>{movieState?.saloonName}</h5>
-                    <h5 className='py-2'><i class="fa-solid fa-calendar-days"></i>{movieState?.movieDay}</h5>
-                    <h5><i class="fa-regular fa-clock"></i>{movieState?.movieTime}</h5>
+                    <h5 className='py-2'><i className="fa-solid fa-calendar-days"></i>{movieState?.movieDay}</h5>
+                    <h5><i className="fa-regular fa-clock"></i>{movieState?.movieTime}</h5>
                 </div>
                
             </div>
