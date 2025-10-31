@@ -6,14 +6,17 @@ RUN apk add --no-cache maven
 
 WORKDIR /app
 
+# Copy parent pom first 
+COPY pom.xml ../pom.xml
+
 # Copy pom.xml for dependency caching
-COPY pom.xml ./
+COPY api-gateway/pom.xml ./
 
 # Download dependencies
 RUN mvn dependency:go-offline -B
 
 # Copy source and build
-COPY src ./src
+COPY api-gateway/src ./src
 RUN mvn clean package -DskipTests
 
 # Production stage
@@ -33,9 +36,10 @@ RUN chown spring:spring /app/app.jar
 USER spring
 
 # Labels
-LABEL maintainer="cinevision-team"
-LABEL version="1.0.0"
-LABEL description="CineVision API Gateway"
+LABEL maintainer="cinevision-team" \
+      version="1.0.0" \
+      description="CineVision API Gateway" \
+      org.opencontainers.image.source="https://github.com/linhne14/CineVisionMicroserviceProject"
 
 # Expose port
 EXPOSE 8080

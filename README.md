@@ -1,24 +1,120 @@
-# Full Stack Web Project with Microservices
-This project is a full-stack web application project
-and it was created with Java and React. 
-Spring Cloud was used in this project to create
-the microservice architecture. Detailed explanations
-of the services in the microservice architecture 
-are explained in the readme files of the services.
+# 🎬 CineVision Microservice Project
 
-## Subject Of Project
-CineVision App is online cinema ticket sale website. Purpose of 
-this website is to provide ease of buying tickets for those who 
-want to watch movies in the cinema. People can display movies in the theaters or
-upcoming movies. They can view the movie details and can learn the plot of the movie, 
-actors of the movie, release date and so on. In this detail page, people can choose the city
-and movie theater where they want to watch to movie. After this selection, they can automatically
-redirect to payment page. In this payment page, they can choose ticket count and type such as 
-student and adult. Then, they can choose the chairs they will sit on in the movie theater.
-Finally, they complete the payment process after entering information
-such as credit card information, email, name and surname.
-If the payment is successful, the ticket details are sent to the email which entered by the user.
-If people want to share their opinions about the movie, they can write comments on the movie detail page.
+Modern sinema bileti satış uygulaması - Spring Boot mikroservis mimarisi ile geliştirilmiş, React.js frontend'e sahip tam kapsamlı bir sistem.
+
+## ✨ Özellikler
+
+- **🏗️ Mikroservis Mimarisi**: Bağımsız, ölçeklenebilir servisler
+- **🔍 Service Discovery**: Eureka Server ile otomatik hizmet keşfi  
+- **🚪 API Gateway**: Merkezi routing ve load balancing
+- **🗄️ Çoklu Veritabanı**: PostgreSQL + MongoDB + Redis
+- **📬 Message Queue**: Kafka ile asenkron iletişim
+- **📊 Monitoring**: Zipkin distributed tracing
+- **⚛️ Modern Frontend**: React.js + Redux + Material-UI
+- **🐳 Containerization**: Docker + Docker Compose
+- **🔧 Production Ready**: Health checks, connection pooling, migrations
+
+## 🏆 Mikroservisler
+
+| Servis | Port | Teknoloji | Açıklama |
+|--------|------|-----------|----------|
+| **Eureka Server** | 8761 | Spring Cloud | Service Discovery |
+| **API Gateway** | 8080 | Spring Cloud Gateway | Routing & Load Balancing |
+| **Movie Service** | 8082 | Spring Boot + PostgreSQL | Film yönetimi & rezervasyon |
+| **User Service** | 8081 | Spring Boot + MongoDB | Kullanıcı yönetimi & auth |
+| **Email Service** | 8083 | Spring Boot + Kafka | Email bildirimleri |
+| **Frontend** | 3000 | React.js | Kullanıcı arayüzü |
+
+## 🚀 Hızlı Başlangıç
+
+### 📋 Gereksinimler
+- **Docker Desktop** (Windows/Mac) veya **Docker + Docker Compose** (Linux)
+- **Java 17 JDK**
+- **Maven 3.6+** 
+- **Node.js 18+**
+
+### ⚡ Tek Komutla Kurulum
+
+```bash
+# Repository'yi klonla
+git clone https://github.com/linhne14/CineVisionMicroserviceProject.git
+cd CineVisionMicroserviceProject
+
+# Otomatik setup (Windows)
+.\quick-setup.ps1
+
+# Manuel kurulum için SETUP.md dosyasına bakın
+```
+
+### 🌐 Erişim Adresleri
+
+| Servis | URL | Açıklama |
+|--------|-----|----------|
+| **Frontend** | http://localhost:3000 | Ana uygulama |
+| **API Gateway** | http://localhost:8080 | API endpoint |
+| **Eureka Dashboard** | http://localhost:8761 | Service registry |
+| **Zipkin Tracing** | http://localhost:9411 | Distributed tracing |
+
+## 📊 Database
+
+### PostgreSQL (Movie Service)
+- **8 adet örnek film** verisi
+- **Flyway migrations** ile otomatik schema
+- **HikariCP connection pooling**
+
+### MongoDB (User Service)  
+- User collection hazır
+- Otomatik bağlantı yapılandırması
+
+## 🛠️ Geliştirme
+
+### Lokal Geliştirme
+```bash
+# Sadece veritabanlarını başlat
+docker-compose up -d postgres mongodb redis
+
+# Java servisini lokal çalıştır
+cd movieService
+mvn spring-boot:run -Dspring-boot.run.profiles=local
+
+# Frontend'i geliştirme modunda çalıştır
+cd frontend  
+npm start
+```
+
+### Docker Build
+```bash
+# Tek servis build
+docker-compose build movie-service
+
+# Tüm Java servislerini build
+docker-compose build eureka-server api-gateway movie-service user-service email-service
+```
+
+## 🔧 Troubleshooting
+
+Problem yaşıyorsanız:
+
+```bash
+# Troubleshooting tool'u çalıştır
+.\troubleshoot.ps1
+
+# Veya manuel reset
+docker-compose down -v
+docker system prune -a
+.\quick-setup.ps1
+```
+
+## 📚 Dokümantasyon
+
+| Dosya | Açıklama |
+|-------|----------|
+| **[QUICK-START.md](QUICK-START.md)** | 🚀 Hızlı başlangıç - clone sonrası ilk çalıştırma |
+| **[SETUP.md](SETUP.md)** | 📋 Detaylı kurulum rehberi ve gereksinimler |
+| **[troubleshoot.ps1](troubleshoot.ps1)** | 🔧 Otomatik problem çözme aracı |
+| **[quick-setup.ps1](quick-setup.ps1)** | ⚡ Tek tıkla kurulum scripti |
+
+**Yaygın problemler için yukarıdaki dokümanlara bakın**
 However, People must create an account to comments on movies. Only admins
 can add movie,actor or director to the system. This authorization process is controlled
 with Jwt token.

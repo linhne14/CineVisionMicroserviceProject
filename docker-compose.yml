@@ -36,8 +36,8 @@ services:
 
   eureka-server:
     build:
-      context: ./eureka-server
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./eureka-server/Dockerfile
     container_name: cinevision-eureka
     ports:
       - "8761:8761"
@@ -55,8 +55,8 @@ services:
 
   api-gateway:
     build:
-      context: ./api-gateway
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./api-gateway/Dockerfile
     container_name: cinevision-gateway
     ports:
       - "8080:8080"
@@ -78,8 +78,8 @@ services:
 
   user-service:
     build:
-      context: ./userService
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./userService/Dockerfile
     container_name: cinevision-user-service
     ports:
       - "8081:8081"
@@ -87,15 +87,13 @@ services:
       - cinevision-network
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/cine_vision
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=12345
+      - EUREKA_HOST=eureka-server
+      - MONGO_HOST=mongodb
     depends_on:
       eureka-server:
         condition: service_healthy
-      postgres:
-        condition: service_started
+      mongodb:
+        condition: service_healthy
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
@@ -106,8 +104,8 @@ services:
 
   movie-service:
     build:
-      context: ./movieService
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./movieService/Dockerfile
     container_name: cinevision-movie-service
     ports:
       - "8082:8082"
@@ -115,12 +113,20 @@ services:
       - cinevision-network
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka
-      - SPRING_DATA_MONGODB_URI=mongodb://rootuser:rootpass@mongodb:27017/cinevision
+      - EUREKA_HOST=eureka-server
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=cine_vision
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres123
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - ZIPKIN_HOST=zipkin
+      - REDIS_HOST=redis
     depends_on:
       eureka-server:
         condition: service_healthy
-      mongodb:
+      postgres:
+        condition: service_healthy
+      kafka:
         condition: service_started
     restart: unless-stopped
     healthcheck:
@@ -132,8 +138,8 @@ services:
 
   email-service:
     build:
-      context: ./emailService
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./emailService/Dockerfile
     container_name: cinevision-email-service
     ports:
       - "8083:8083"
@@ -141,10 +147,14 @@ services:
       - cinevision-network
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - EUREKA_HOST=eureka-server
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - ZIPKIN_HOST=zipkin
     depends_on:
       eureka-server:
         condition: service_healthy
+      kafka:
+        condition: service_started
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8083/actuator/health"]
@@ -162,7 +172,7 @@ services:
     image: postgres:15-alpine
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 12345
+      POSTGRES_PASSWORD: postgres123
       POSTGRES_DB: cine_vision
       PGDATA: /data/postgres
     volumes:
